@@ -4,9 +4,14 @@
       <div class='title'>
         <span>{{recipe.title}}</span>
       </div>
-      <div class='info'>
+      <div class='times'>
         <div class='cook_time'>Cook Time: {{recipe.cookTime}}</div>
         <div class='oven_temp'>Oven Temp: {{recipe.ovenTemp}}</div>
+      </div>
+      <div class='clear_both'/>
+      <div class='info'>
+        <div>{{recipe.category}}</div>
+        <div>{{recipe.origin}}</div>
       </div>
       <div class='clear_both'></div>
     </div>
@@ -28,6 +33,7 @@
         </ul>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -47,58 +53,27 @@ export default {
   },
   data() {
     return {
-      recipe:{
-        title: 'Recipe Card',
-        cookTime: '1 hr',
-        ovenTemp: '300 F',
-        ingredients: [{
-            quantity: '1',
-            measure: 'ea',
-            name: 'strawberry',
-            id: 0
-          },
-          {
-            quantity: '2',
-            measure: 'tsp',
-            name: 'sugar',
-            id: 1
-          }
-        ],
-        directions: [{
-            description: 'Do some stuff',
-            id: 0
-          },
-          {
-            description: 'Do some other stuff',
-            id: 1
-          },
-          {
-            description: 'Eat the food',
-            id: 2
-          },
-        ]
-      }
+      recipe:{}
     }
   },
   methods: {
     init(){
-      var self = this;
-      fetch('./recipes.json')
-          .then((response) => {
-              if(response.ok) {
-                  return response.json();
-              }
+        var self = this;
+        fetch('./recipes.json')
+            .then((response) => {
+                if(response.ok) {
+                    return response.json();
+                }
 
-              throw new Error('Network response was not ok');
-          })
-          .then((json) => {
-            var recipe = json.recipes[self.recipeid];
-            console.log(recipe);
-            self.recipe = recipe;
-          })
-          .catch((error) => {
-              console.log(error);
-          });
+                throw new Error('Network response was not ok');
+            })
+            .then((json) => {
+              var recipe = json.recipes[self.recipeid];
+              self.recipe = recipe;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
   },
   created(){
@@ -121,6 +96,9 @@ export default {
   font-weight: bold;
 }
 .info{
+  float: left;
+}
+.times{
   float:right;
   text-align: right;
 }

@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -41,10 +42,13 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map',
+    devtool: false,//'#eval-source-map',
     // node: {
     //     fs: 'empty'
-    // }
+    // },
+    plugins: [
+      new UglifyJSPlugin()
+    ]
 }
 
 // if (process.env.NODE_ENV === 'production') {
