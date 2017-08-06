@@ -2,11 +2,11 @@
   <div class='recipe'>
     <div class='header'>
       <div class='title'>
-        <span>{{title}}</span>
+        <span>{{recipe.title}}</span>
       </div>
       <div class='info'>
-        <div class='cook_time'>Cook Time: {{cookTime}}</div>
-        <div class='oven_temp'>Oven Temp: {{ovenTemp}}</div>
+        <div class='cook_time'>Cook Time: {{recipe.cookTime}}</div>
+        <div class='oven_temp'>Oven Temp: {{recipe.ovenTemp}}</div>
       </div>
       <div class='clear_both'></div>
     </div>
@@ -14,7 +14,7 @@
       <div class='ingredients'>
         <h1>Ingredients</h1>
         <ul>
-          <li v-for="ingredient in ingredients" :key="ingredient.id">
+          <li v-for="ingredient in recipe.ingredients" :key="ingredient.id">
             {{ingredient.quantity}} {{ingredient.measure}} {{ingredient.name}}
           </li>
         </ul>
@@ -22,77 +22,87 @@
       <div class='directions'>
         <h1>Directions</h1>
         <ul>
-          <li v-for="direction in directions" :key="direction.id">
+          <li v-for="direction in recipe.directions" :key="direction.id">
             {{direction.description}}
           </li>
         </ul>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-var debounce;
 export default {
-  name: 'msg',
+  name:'recipeid',
   props: {
+    recipeid :{
+      type:String,
+      default:'0'
+    }
+  },
+  watch:{
+    recipeid(){
+      this.init();
+    }
   },
   data() {
     return {
-      title: 'Strawberry Pie',
-      user: {
-        firstName: 'Test',
-        lastName: 'Testerson'
-      },
-      cookTime: '1 hr',
-      ovenTemp: '300 F',
-      ingredients: [{
-          quantity: '1',
-          measure: 'ea',
-          name: 'strawberry',
-          id: 0
-        },
-        {
+      recipe:{
+        title: 'Recipe Card',
+        cookTime: '1 hr',
+        ovenTemp: '300 F',
+        ingredients: [{
+            quantity: '1',
+            measure: 'ea',
+            name: 'strawberry',
+            id: 0
+          },
+          {
             quantity: '2',
             measure: 'tsp',
             name: 'sugar',
             id: 1
-        }
-      ],
-      directions: [{
-          description: 'Do some stuff',
-          id: 0
-        },
-        {
-          description: 'Do some other stuff',
-          id: 1
-        },
-        {
-          description: 'Eat the food',
-          id: 2
-        },
-      ]
+          }
+        ],
+        directions: [{
+            description: 'Do some stuff',
+            id: 0
+          },
+          {
+            description: 'Do some other stuff',
+            id: 1
+          },
+          {
+            description: 'Eat the food',
+            id: 2
+          },
+        ]
+      }
     }
   },
   methods: {
-    greet: function(greeting) {
-      alert(greeting);
-    },
-    pressKey: function(e) {
-      clearTimeout(debounce);
-      debounce = setTimeout(function() {
-        console.log("Changed");
-      }, 200)
-    },
-    pressEnter: function(e) {
-      console.log("Enter Pressed");
+    init(){
+      var self = this;
+      fetch('./recipes.json')
+          .then((response) => {
+              if(response.ok) {
+                  return response.json();
+              }
+
+              throw new Error('Network response was not ok');
+          })
+          .then((json) => {
+            var recipe = json.recipes[self.recipeid];
+            console.log(recipe);
+            self.recipe = recipe;
+          })
+          .catch((error) => {
+              console.log(error);
+          });
     }
   },
-  computed: {
-    fullname: function() {
-      return this.user.firstName + " " + this.user.lastName;
-    }
+  created(){
+      this.init();
   }
 }
 </script>

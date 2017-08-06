@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-     <recipe></recipe>
+     <recipeList></recipeList>
   </div>
 </template>
 
 <script>
-import Recipe from './Recipe'
+import RecipeList from './RecipeList'
 export default {
   name: 'app',
   components: {
-    Recipe,
+    RecipeList,
   }
 }
 </script>
