@@ -22,9 +22,42 @@
   <div class='instructions'>
     <div class='ingredients'>
       <h1>Ingredients</h1>
+      <table>
+        <thead>
+          <th>Quantity</th>
+          <th>Measure</th>
+          <th>Name</th>
+        </thead>
+        <tbody>
+          <tr v-for="ingredient in ingredients" :key="Math.random()">
+            <td><input v-model="ingredient.quantity" size="5"></td>
+            <td><input v-model="ingredient.measure" size="5"></td>
+            <td><input v-model="ingredient.name" size="35"></td>
+          </tr>
+        </tbody>
+      </table>
+      <button @click="addIngredient">
+        New Ingredient
+      </button>
     </div>
     <div class='directions'>
       <h1>Directions</h1>
+      <table>
+        <thead>
+          <th>Step</th>
+          <th>Description</th>
+        </thead>
+        <tbody>
+          <tr v-for="(direction, index) in directions" :key="Math.random()">
+            <td v-model="direction.stepNumber">{{index + 1}}</td>
+            <td><input v-model="direction.description" size="35"></td>
+            <td>X</td>
+          </tr>
+        </tbody>
+      </table>
+      <button @click="addDirection">
+        New Direction
+      </button>
     </div>
   </div>
 </div>
@@ -42,13 +75,19 @@ export default {
       origin:'',
       cookTime:'',
       ovenTemp:'',
-      ingredients:[],
-      directions:[]
+      ingredients:[{ quantity: '', measure: '', name: '' }],
+      directions:[{ stepNumber: '', description: '' }]
     }
   },
   methods: {
     init() {
 
+    },
+    addIngredient(){
+      this.ingredients.push({ quantity: '', measure: '', name: '' });
+    },
+    addDirection(){
+      this.directions.push({ stepNumber: '', description: ''});
     }
   },
   created() {
