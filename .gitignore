@@ -1,4 +1,5 @@
 node_modules/
 site/*
 !site/index.html
-!/style.css
+!site/style.css
+!site/api

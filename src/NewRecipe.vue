@@ -1,23 +1,50 @@
 <template>
 <div class='newRecipe'>
   <div class='header'>
-    <div class='title'>
-      <input type='text' placeholder="Title" v-model="recipe.title"></input>
+    <div class="ui two column grid">
+      <div class="column">
+        <div class="ui segment">
+          <div class="ui form segment">
+            <div class="field">
+              <label>Title</label>
+              <div class="field">
+                <input type="text" placeholder="Title" v-model="recipe.title">
+              </div>
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <div class="field">
+                <input type="text" placeholder="Category" v-model="recipe.category">
+              </div>
+            </div>
+            <div class="field">
+              <label>Origin</label>
+              <div class="field">
+                <input type="text" placeholder="Origin" v-model="recipe.origin">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui segment">
+          <div class="ui form segment">
+              <div class="field">
+                <label>Oven Temp</label>
+                <div class="field">
+                  <input type="text" placeholder="Oven Temp" v-model="recipe.ovenTemp">
+                </div>
+              </div>
+              <div class="field">
+                <label>Cook Time</label>
+                <div class="field">
+                  <input type="text" placeholder="Cook Time" v-model="recipe.cookTime">
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class='times'>
-      <div class='cook_time'>Cook Time: <input type='text' placeholder="Cook Time" v-model="recipe.cookTime"></input>
-      </div>
-      <div class='oven_temp'>Oven Temp: <input type='text' placeholder="Oven Temp" v-model="recipe.ovenTemp"></input>
-      </div>
-    </div>
-    <div class='clear_both' />
-    <div class='info'>
-      <div><input type='text' placeholder="Category" v-model="recipe.category"></input>
-      </div>
-      <div><input type='text' placeholder="Origin" v-model="recipe.origin"></input>
-      </div>
-    </div>
-    <div class='clear_both'></div>
   </div>
   <div class='instructions'>
     <div class='ingredients'>
@@ -28,31 +55,30 @@
             <div class="field" v-for="(ingredient, index) in recipe.ingredients" :key="ingredient.id">
               <div class="fields">
                 <div class="ui icon buttons two wide field">
-                  <button class="ui button" v-if="index > 0" v-on:click="moveUp(index, recipe.ingredients)">
+                  <button class="ui button" v-if="index > 0" @click="moveUp(index, recipe.ingredients)">
                     <i class="chevron up icon"></i>
                   </button>
-                  <button class="ui button" v-if="index < recipe.ingredients.length - 1" v-on:click="moveDown(index, recipe.ingredients)">
+                  <button class="ui button" v-if="index < recipe.ingredients.length - 1" @click="moveDown(index, recipe.ingredients)">
                     <i class="chevron down icon"></i>
                   </button>
                 </div>
                 <div class="two wide field">
-                  <input type="text" placeholder="Quantity">
+                  <input type="text" placeholder="Quantity" v-model="ingredient.quantity">
                 </div>
                 <div class="two wide field">
-                  <input type="text" placeholder="Measurement">
+                  <input type="text" placeholder="Measurement" v-model="ingredient.measure">
                 </div>
                 <div class="eight wide field">
-                  <input type="text" placeholder="Name">
+                  <input type="text" placeholder="Name" v-model="ingredient.name">
                 </div>
                 <div class="one wide field">
-                  <button class="ui compact icon button" v-on:click="remove(index, recipe.ingredients)">
+                  <button class="ui compact icon button" @click="remove(index, recipe.ingredients)">
                     <i class="close icon"></i>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
           <button @click="addIngredient" class="ui compact icon button">
             <i class="plus icon"></i>
           </button>
@@ -66,12 +92,12 @@
           <table class="ui basic table">
             <tbody>
               <tr v-for="(direction, index) in recipe.directions" :key="direction.id">
-                <td  :class="'collapsing ' + (index > 0 ? 'left' : 'right') + ' aligned'">
+                <td :class="'collapsing ' + (index > 0 ? 'left' : 'right') + ' aligned'">
                   <div class="ui icon buttons">
-                    <button class="ui button" v-if="index > 0" v-on:click="moveUp(index, recipe.directions)">
+                    <button class="ui button" v-if="index > 0" @click="moveUp(index, recipe.directions)">
                       <i class="chevron up icon"></i>
                     </button>
-                    <button class="ui button" v-if="index < recipe.directions.length - 1" v-on:click="moveDown(index, recipe.directions)">
+                    <button class="ui button" v-if="index < recipe.directions.length - 1" @click="moveDown(index, recipe.directions)">
                       <i class="chevron down icon"></i>
                     </button>
                   </div>
@@ -83,7 +109,7 @@
                   <textarea class="fluid full_text" v-model="direction.description"></textarea>
                 </td>
                 <td class="right aligned collapsing">
-                  <button class="ui compact icon button" v-on:click="remove(index, recipe.directions)">
+                  <button class="ui compact icon button" @click="remove(index, recipe.directions)">
                     <i class="close icon"></i>
                   </button>
                 </td>
@@ -102,55 +128,62 @@
 </template>
 
 <script>
-
 export default {
-  recipe:'recipe',
+  recipe: 'recipe',
   props: {
-    recipe:{
-      type:Object,
-      default:{}
+    recipe: {
+      type: Object,
+      default: {}
     }
   },
   watch: {
-    internalRecipe(){
+    internalRecipe() {
       this.$emit('input', this.internalRecipe);
     }
   },
   data() {
     return {
-      internalRecipe:{}
+      internalRecipe: {}
     }
   },
   methods: {
     init() {
       this.internalRecipe = this.recipe;
     },
-    addIngredient(){
-      this.internalRecipe.ingredients.push({ quantity: '', measure: '', name: '', pos: '' });
+    addIngredient() {
+      this.internalRecipe.ingredients.push({
+        pos: this.recipe.ingredients.length + 1,
+        quantity: '',
+        measure: '',
+        name: ''
+      });
     },
-    addDirection(){
-      this.internalRecipe.directions.push({ pos: this.internalRecipe.directions.length + 1, description: ''});
+    addDirection() {
+      this.internalRecipe.directions.push({
+        pos: this.recipe.directions.length + 1,
+        description: ''
+      });
     },
-    remove(index, array){
+    remove(index, array) {
       var item = array[index];
       if (item.pos === undefined) {
         console.error("Item in array does not have pos element");
         return;
       }
-      if(index < -1){
+      if (index < -1) {
         console.error("Index is less than lower bound, do not remove");
         return;
       }
-      if(index >= array.length){
+      if (index >= array.length) {
         console.error("Index is greater than array length, do not remove");
         return;
       }
-      if(index == -1){
+      if (index == -1) {
         index = array.length - 1;
       }
       array.splice(index, 1);
-      array.forEach(function(item, pos){
-        if(index <= pos)
+      array.forEach(function(item, pos) {
+        if (index <= pos)
           item.pos--;
       })
     },
@@ -208,7 +241,8 @@ export default {
 </script>
 
 <style scoped>
-textarea, .full{
-  width:100%;
+textarea,
+.full {
+  width: 100%;
 }
 </style>

@@ -1,0 +1,15 @@
+body
+{
+    padding: 10px;
+    /*border: 10px solid gray;*/
+}
+
+.clear_both{
+  clear:both;
+}
+
+input{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
