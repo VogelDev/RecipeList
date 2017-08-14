@@ -25,6 +25,24 @@
         </ul>
       </div>
       <div class='directions'>
+        <div class="column">
+          <div class="ui raised segment">
+            <a class="ui teal ribbon label">Directions</a>
+            <table class="ui basic table">
+              <tbody>
+                <tr v-for="(direction, index) in recipe.directions" :key="direction.id">
+                  <td>{{index}}</td>
+                  <td>{{direction.description}}</td>
+                  <td>
+                    <button class="ui compact icon button">
+                      <i class="close icon"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
         <h1>Directions</h1>
         <ul>
           <li v-for="direction in recipe.directions" :key="direction.id">

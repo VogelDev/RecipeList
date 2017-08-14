@@ -42,7 +42,7 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: false,//'#eval-source-map',
+    devtool: '#eval-source-map',
     // node: {
     //     fs: 'empty'
     // },

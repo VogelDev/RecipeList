@@ -17,7 +17,7 @@
 			</div>
 			<a href="#" v-if='showRecipe' class="back_btn" v-on:click="backClicked">&lt;-BACK</a>
 			<recipe :recipeid='selectedRecipe' v-if='showRecipe'></recipe>
-      <newRecipe v-if='showNewRecipe'></newRecipe>
+      <newRecipe v-if='showNewRecipe' :recipe='newRecipe' v-model='newRecipe'></newRecipe>
       <div class="newRecipeActions" v-if='showNewRecipe'>
         <button v-on:click="cancelNewRecipe">CANCEL</button>
         <button v-on:click="saveNewRecipe">SAVE</button>
@@ -28,6 +28,7 @@
 <script>
 import Recipe from './Recipe'
 import NewRecipe from './NewRecipe'
+import axios  from 'axios'
 export default {
   components: {
     Recipe,
@@ -39,7 +40,8 @@ export default {
       showRecipe:false,
       showNewRecipe:false,
       selectedRecipe:'',
-      recipes: []
+      recipes: [],
+			newRecipe: {}
     }
   },
   methods: {
@@ -54,34 +56,61 @@ export default {
     },
     newClicked(){
       this.showNewRecipe = true;
-        this.showRecipe = false;
+      this.showRecipe = false;
     },
     cancelNewRecipe(){
       this.showNewRecipe = false;
       this.showRecipe = false;
+			this.resetNewRecipe();
     },
     saveNewRecipe(){
       this.showNewRecipe = false;
       this.showRecipe = false;
-    }
+
+			axios.post('https://www.vogeldev.com/vue/recipes/api/add_recipe.php', {
+				body: JSON.stringify(this.newRecipe)
+			}).then(response => {
+				this.resetNewRecipe();
+			})
+			.catch(e => {
+				console.log(e);
+			})
+    },
+		resetNewRecipe(){
+			this.newRecipe = {
+			  "category":"",
+			  "origin":"",
+	      "title": "",
+	      "cookTime": "",
+	      "ovenTemp": "",
+	      "ingredients": [
+	          {
+	            "quantity": "",
+	            "measure": "",
+	            "name": "",
+							"pos": ""
+	          },
+	      ],
+	      "directions": [
+	        {
+						"pos":"1",
+						"description":""
+					}
+	      ]
+			}
+		}
   },
   created(){
     var self = this;
-    fetch('./recipes.json')
-        .then((response) => {
-            if(response.ok) {
-                return response.json();
-            }
 
-            throw new Error('Network response was not ok');
-        })
-        .then((json) => {
-          // debugger;
-          self.recipes = json.recipes;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+		axios.get('./recipes.json')
+		.then(response => {
+			self.recipes = response.data.recipes;
+		}).catch(e => {
+			console.log(e);
+		})
+
+		this.resetNewRecipe();
   }
 }
 </script>
@@ -89,8 +118,8 @@ export default {
 <style scoped>
 
 .recipeList{
-  width:50vw;
-  margin: auto;
+  /*width:50vw;*/
+  /*margin: auto;*/
 }
 
 .back_btn {
