@@ -1,6 +1,7 @@
 module.exports = function (grunt) {
 
-    const webpackConfig = require('./webpack.config');
+    const webpackDevConfig = require('./webpack.dev.config');
+    const webpackProdConfig = require('./webpack.prod.config');
 
     grunt.initConfig({
         watch: {
@@ -38,7 +39,8 @@ module.exports = function (grunt) {
             options: {
                 //stats: !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
             },
-            prod: webpackConfig,
+            prod: webpackProdConfig,
+            dev: webpackDevConfig,
             // dev: Object.assign({ watch: true }, webpackConfig)
         }
     });
@@ -54,5 +56,12 @@ module.exports = function (grunt) {
     // });
 
     // Default task(s).
-    grunt.registerTask('default', ['clean', 'webpack:prod', 'browserSync', 'watch']);
+    grunt.registerTask('default', ['dev']);
+
+    // Build without browsersync or watch
+    grunt.registerTask('prod', ['clean', 'webpack:prod']);
+    // Build with browsersync or watch
+    grunt.registerTask('dev', ['clean', 'webpack:dev', 'browserSync', 'watch']);
+
+
 };
