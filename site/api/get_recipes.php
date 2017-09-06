@@ -12,4 +12,4 @@ $stmt = $db_conn->prepare($query);
 $stmt->execute();
 $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo json_encode($recipes);
+echo json_encode($recipes, JSON_PRETTY_PRINT);

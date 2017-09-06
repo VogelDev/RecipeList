@@ -60,8 +60,10 @@ module.exports = function (grunt) {
 
     // Build without browsersync or watch
     grunt.registerTask('prod', ['clean', 'webpack:prod']);
-    // Build with browsersync or watch
+    // Build with browserSync or watch
     grunt.registerTask('dev', ['clean', 'webpack:dev', 'browserSync', 'watch']);
+    // Build with watch, but no browserSync, intended for development with live server
+    grunt.registerTask('server', ['clean', 'webpack:dev', 'watch']);
 
 
 };

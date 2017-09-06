@@ -3,3 +3,4 @@ site/*
 !site/index.html
 !site/style.css
 !site/api
+site/api/db_conn.php

@@ -110,9 +110,9 @@ export default {
   created() {
     var self = this;
 
-    axios.get('./recipes.json')
+    axios.get('https://www.vogeldev.com/vue/recipes/api/get_recipes.php')
       .then(response => {
-        self.recipes = response.data.recipes;
+        self.recipes = response.data;
       }).catch(e => {
         console.log(e);
       })

@@ -1,9 +1,9 @@
 <?php
-
+require_once 'cors.php';
  $db_host = "localhost";
  $db_name = "vue_recipes";
  $db_user = "vue_recipes";
- $db_pass = "mShAHu2N3nv8";
+ $db_pass = "rR2k3FaYhnJ9VM2f";
 
  try{
 

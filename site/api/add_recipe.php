@@ -5,13 +5,7 @@ ini_set('display_startup_errors', 1);
 
 $request = file_get_contents('php://input');
 
-// if(!strlen($request)){
-//   echo "no stuff";
-  require_once 'cors.php';
-//   exit;
-// }
-
-// echo "test";
+require_once 'cors.php';
 
 require_once 'db_conn.php';
 
