@@ -1,8 +1,8 @@
 # Recipe List
 ## Purpose
 + To explore single page applications
-+ To work with getting and setting data via an api
- + I don't consider the php that currently exists as an api, but I'm using it like one
++ To work with getting and setting data via an api  
+  + I don't consider the php that currently exists as an api, but I'm using it like one
 + Somewhere to save recipes because I lose or ruin paper copies
 
 ## Process
